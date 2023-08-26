@@ -19,7 +19,7 @@ async def send_message(message, user_message, is_private):
 
 
 def run_discord_bot():
-    token = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+    token = 'xxxxxxxxxxxxxxxxx'
     
     @client.event 
     async def on_ready():
@@ -85,6 +85,11 @@ def run_discord_bot():
             value = 'Este é o comando para ver a lista de comandos que eu consigo executar!',
             inline = False
         )
+        embed.add_field(
+            name = "`?sugestao`",
+            value = 'Tem alguma sugestão de comando para o bot?',
+            inline = False
+        )
         
         embed.add_field(
             name = '`?ajuda`',
@@ -123,6 +128,10 @@ def run_discord_bot():
     @client.command()
     async def regras(ctx):
         await ctx.send('Não sabe as regras? Veja o canal <#1143041155773255700> ')
+        
+    @client.command()
+    async def sugestao(ctx):
+        await ctx.send('Abra uma [Issue](https://github.com/HeyEverton/discord-bot/issues/new) no repositório do bot!')
     
 
     client.run(token)

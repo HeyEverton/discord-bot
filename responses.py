@@ -1,6 +1,6 @@
 import random
 
-def handle_commands(content_message, user_message_content)-> str:
+def handle_responses(content_message, user_message_content)-> str:
     p_message = content_message.lower()
     if user_message_content.author == 'deskimon':
         print('sou eu mesmo que enviei a mensagem')

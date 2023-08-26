@@ -1,6 +1,11 @@
 import discord
+from discord.ext import commands
 import responses
-import commands
+
+intents = discord.Intents.default()
+intents.message_content = True  
+    
+client = commands.Bot(command_prefix = '?', intents=intents)
 
 async def send_message(message, user_message, is_private):
     try:
@@ -8,58 +13,116 @@ async def send_message(message, user_message, is_private):
         await message.author.send(response) if is_private else await message.channel.send(response)
         
     except Exception as e:
-        print(f"EXCEPTION IN SEND MESSAGES: {e}")
+        print(e)
         
-async def send_commands(message, user_message):
-    try:
-        if message.author == 'deskimon':
-            print(message.author)
-            print('----------------17 ')
-            print('sou eu que enviou a mensagem')
-        else: 
-            print(message.author)
-            print('----------------21 ')
-            print('não foi eu que enviou a mensagem')
-        response = commands.handle_commands(user_message, message)
-        await message.channel.send(response)
-        # else:
-        #     await message.channel.send('Desculpe! eu só posso responder ao usuário `deskimode`')
-    except Exception as e:
-        print(f"EXCEPTION IN HANDLE COMMANDS: {e}")
-        
-def run_discord_bot():
-    token = 'MTE0NDQ1MzcxNjIxNzQ0MjQwNQ.GKZDid.a8qJH-Nbb5fodOIjax9IokKCiS2hCS54UCTDjo'
-    
-    intents = discord.Intents.default()
-    intents.message_content = True  
-    
-    client = discord.Client(intents=intents)
-    
-    @client.event
-    async def on_ready():
-        print(f'{client.user} agora está rodando!')
-        
-        
-        
-    @client.event
-    async def on_message(message):
-        if message.author == client.user:
-            return
-    
-        username = str(message.author)
-        user_message = str(message.content)
-        channel = str(message.channel)
-        if '?' in user_message[0]:
-            await send_commands(message, user_message)
-        
-        print('--------------55')
-        print(f"{username} disse: '{user_message}' em ({channel})")
-        
-        # if user_message[0] == '?':
-        #     user_message = user_message[1:]
-        #     await send_message(message, user_message, is_private=True)
-        # else:
-        # await send_message(message, user_message, is_private=False)
 
+
+
+def run_discord_bot():
+    token = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+    
+    @client.event 
+    async def on_ready():
+        print('-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+        print(f"{client.user} agora está rodando")
+        print('-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+
+    # @client.event
+    # async def on_message(message):
+    #     if message.author == client.user:
+    #         return
+    
+    #     username = str(message.author)
+    #     user_message = str(message.content)
+    #     channel = str(message.channel)
+    #     # print('-----------------------')
+    #     print(f"{username} disse: '{user_message}' em ({channel})")
         
+    #     await send_message(message, user_message, is_private=False)
+
+    @client.command()
+    async def oi(ctx):
+        print(ctx.author)
+        await ctx.send(f'Olá {ctx.author}! quer saber meus comandos? digite `?comandos`')
+        
+    @client.command()
+    async def comandos(ctx):
+        description_embed = "vou ganhar consciência..." 
+        embed = discord.Embed(
+            title = f'Olá {ctx.author}! Eu sou um bot em desenvolvimento e tenho alguns **comandos**!',
+            description = description_embed,
+            colour = discord.Colour.purple(),
+        )
+        embed.set_author(
+            name = 'Bot do Hamlet',
+            icon_url = 'https://i.imgur.com/Fr4rWRC.jpg'
+        )
+        embed.set_thumbnail(url="https://i.imgur.com/8MsmjyF.gif")
+
+        embed.add_field(
+            name = "`?criador`",
+            value = "Este é o comando para ver as informações do meu **criador**! ",
+            inline = False
+        )
+        embed.add_field(
+            name = "`?filmes`",
+            value = 'Este é o comando para ver a lista de filmes que o Hamlet já assistiu em [LIVE](https://www.twitch.tv/hamletarl) !',
+            inline = False
+        )
+        embed.add_field(
+            name = "`?regras`",
+            value = 'Veja as regras do servidor!',
+            inline = False
+        )
+        embed.add_field(
+            name = "`?oi`",
+            value = 'O comando para um saudoso oi!',
+            inline = False
+        )
+        
+        embed.add_field(
+            name = "`?comandos`",
+            value = 'Este é o comando para ver a lista de comandos que eu consigo executar!',
+            inline = False
+        )
+        
+        embed.add_field(
+            name = '`?ajuda`',
+            value = 'Comando para ajuda',
+            inline = False
+        )
+        await ctx.send(embed = embed)
+        
+    @client.command()
+    async def criador(ctx):
+        
+        description_embed = "Para mais informações, por favor visite o [o meu Github](https://github.com/HeyEverton)" 
+        embed = discord.Embed(
+            title = 'Sou eu! o garoto de programas!',
+            description = description_embed,
+            colour = discord.Colour.red(),
+        )
+        
+        embed.set_author(
+            name = 'daskimode',
+            icon_url = 'https://i.imgur.com/nB28sLG.jpg'
+        )
+        
+        embed.set_thumbnail(url="https://i.imgur.com/8MsmjyF.gif")
+        await ctx.send(embed = embed)
+        
+    @client.command()
+    async def filmes(ctx):
+        await ctx.send('Para ver todos os filmes que o Hamlet já viu, acesse a [Lista de Filmes](https://letterboxd.com/hamletarl/)')
+        
+    @client.command()
+    async def ajuda(ctx):
+        await ctx.send('Precisa de alguma ajuda no nosso servidor do discord? Contate algum moderador!')
+        
+        
+    @client.command()
+    async def regras(ctx):
+        await ctx.send('Não sabe as regras? Veja o canal <#1143041155773255700> ')
+    
+
     client.run(token)

@@ -1,10 +1,12 @@
 import discord
 from discord.ext import commands
 import responses
+from datetime import datetime
 
 intents = discord.Intents.default()
 intents.message_content = True  
-    
+now = datetime.now()
+current_time = now.strftime("%H:%M:%S")
 client = commands.Bot(command_prefix = '?', intents=intents)
 
 async def send_message(message, user_message, is_private):
@@ -24,9 +26,15 @@ def run_discord_bot():
     @client.event 
     async def on_ready():
         print('-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
-        print(f"{client.user} agora está rodando")
+        print(f"{client.user} agora está rodando: {current_time}")
         print('-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
 
+    @client.event
+    async def on_command_error(ctx, error):
+        if isinstance(error, commands.CommandNotFound):
+            await ctx.send("Desculpe, esse comando não foi reconhecido. Digite `?comandos` para ver a lista de comandos disponíveis.")
+        else:
+            print(error)
     # @client.event
     # async def on_message(message):
     #     if message.author == client.user:
@@ -42,7 +50,7 @@ def run_discord_bot():
 
     @client.command()
     async def oi(ctx):
-        print(ctx.author)
+        print(f'{ctx.author} ')
         await ctx.send(f'Olá {ctx.author}! quer saber meus comandos? digite `?comandos`')
         
     @client.command()

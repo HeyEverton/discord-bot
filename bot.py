@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import responses
 from datetime import datetime
+import random
 
 intents = discord.Intents.default()
 intents.message_content = True  
@@ -21,7 +22,7 @@ async def send_message(message, user_message, is_private):
 
 
 def run_discord_bot():
-    token = 'xxxxxxxxxxxxxxxxx'
+    token = 'xxxxxxxxxxx'
     
     @client.event 
     async def on_ready():
@@ -141,5 +142,89 @@ def run_discord_bot():
     async def sugestao(ctx):
         await ctx.send('Abra uma [Issue](https://github.com/HeyEverton/discord-bot/issues/new) no repositório do bot!')
     
+    @client.command()
+    async def recomenda(ctx):
+        await ctx.send('Hmm... Estou pensando... 🤔')
+        books = [
+        {   
+            'book_author': 'Sêneca',
+            'books': [
+                {
+                    'book_name': 'Sobre a brevidade da Vida.',
+                    'short_description': 'xxxxxx',
+                    'cover_image': 'https://http2.mlstatic.com/D_NQ_NP_782373-MLU50457184108_062022-O.webp',
+                    'famous_phrases': [
+                        { 'phrase': 'Sofremos mais na imaginação do que na realidade.' },
+                        { 'phrase': 'A vida é breve, mas cabe nela muito mais do que somos capazes de viver.' },
+                    ]
+                },
+                {
+                    'book_name': 'xxxxxseneca',
+                    'short_description': 'yyyyy',
+                    'cover_image': 'https://http2.mlstatic.com/D_NQ_NP_782373-MLU50457184108_062022-O.webp',
+                    'famous_phrases': [
+                        { 'phrase': 'Sofremos mais na imaginação do que na realidade.' },
+                        { 'phrase': 'A vida é breve, mas cabe nela muito mais do que somos capazes de viver.' },
+                    ]
+                },
+            ],
+            
+        },
+        {   
+            'book_author': 'Platão',
+            'books': [
+                {
+                    'book_name': 'A República',
+                    'short_description': 'xxxxxx',
+                    'cover_image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs8KboHnyFMzX2-Dqlrpc0btSfC9hp0OZhoA&usqp=CAU',
+                    'famous_phrases': [
+                        { 'phrase': 'platao frase 1' },
+                        { 'phrase': 'platao frase 2' },
+                    ]
+                },
+            ],
+            
+        },
+        
+        
+            # 'O Banquete, de Platão',
+            # 'Retórica, de Aristoteles',
+            # 'Hamlet, de William Shakespeare',
+        ]
+        await ctx.send('Já sei! acho que um bom livro é...')
+        random.shuffle(books)
+        for b in books:
+            philosopher = b['book_author']
+            random.shuffle(b['books'])
+            random_book = b['books'][0]
+            book_name = random_book['book_name']
+            short_description = random_book['short_description']
+            cover_image = random_book['cover_image']
+            random.shuffle(random_book['famous_phrases'])
+            famous_phrase = random_book['famous_phrases'][0]['phrase']
+
+            
+        embed = discord.Embed(
+            title = book_name,
+            description = short_description,
+            colour = discord.Colour.purple(),
+        )
+        
+        embed.set_author(
+            name = philosopher,
+            icon_url = 'https://i.imgur.com/8MsmjyF.gif'
+        )
+        
+        embed.add_field(
+            name = f"Uma frase famosa do livro {book_name}",
+            value = famous_phrase,
+            inline = False
+        )
+        
+        embed.set_thumbnail(url = cover_image)
+
+        
+        await ctx.send(embed = embed)
+
 
     client.run(token)
